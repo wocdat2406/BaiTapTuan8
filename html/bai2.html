@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Form Xử Lý Dữ Liệu Hoa</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script>
+        function updateTotal() {
+            const rows = document.querySelectorAll('#flowerForm tbody tr');
+            let total = 0;
+            rows.forEach(row => {
+                const price = parseInt(row.querySelector('.price').textContent);
+                const qty = parseInt(row.querySelector('.qty').value);
+                if (!isNaN(qty) && qty >= 0) {
+                    total += price * qty;
+                }
+            });
+            document.getElementById('totalPrice').textContent = total;
+        }
+
+        document.querySelectorAll('.qty').forEach(input => {
+            input.addEventListener('input', updateTotal);
+        });
+
+        updateTotal();
+    </script>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        img {
+            width: 100px;
+            height: auto;
+        }
+        
+        input[type="number"] {
+            width: 60px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Thiết kế form xử lý dữ liệu</h2>
+    <form id="flowerForm">
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Hình ảnh</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><img src="../img/flower1.webp" alt="Hoa 1"></td>
+                    <td class="price">20000</td>
+                    <td><input type="number" min="0" value="20" class="qty"></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><img src="../img/flower2.webp" alt="Hoa 2"></td>
+                    <td class="price">40000</td>
+                    <td><input type="number" min="0" value="5" class="qty"></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><img src="../img/flower3.webp" alt="Hoa 3"></td>
+                    <td class="price">30000</td>
+                    <td><input type="number" min="0" value="0" class="qty"></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><img src="../img/flower4.webp" alt="Hoa 4"></td>
+                    <td class="price">50000</td>
+                    <td><input type="number" min="0" value="0" class="qty"></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><img src="../img/flower5.webp" alt="Hoa 5"></td>
+                    <td class="price">30000</td>
+                    <td><input type="number" min="0" value="0" class="qty"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>Tổng thành tiền</strong></td>
+                    <td id="totalPrice">0</td>
+                </tr>
+            </tfoot>
+        </table>
+    </form>
+
+</body>
+
+</html>

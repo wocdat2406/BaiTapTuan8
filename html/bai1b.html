@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng ký Facebook</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ebee;
+            margin: 0;
+        }
+        
+        .header {
+            background-color: #3b5998;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .header .login-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .header input {
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+        }
+        
+        .header button {
+            background-color: #4267b2;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 60px);
+            padding-top: 20px;
+        }
+        
+        .box {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 40px;
+        }
+        
+        .left {
+            width: 200px;
+            text-align: center;
+        }
+        
+        .left img {
+            width: 100%;
+        }
+        
+        .right {
+            width: 300px;
+        }
+        
+        .right h2 {
+            color: #1c1e21;
+        }
+        
+        .right input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .btn {
+            background-color: #42b72a;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header mb-5">
+        <div class="logo">facebook</div>
+        <div class="login-form">
+            <input type="text" placeholder="Email hoặc số điện thoại">
+            <input type="password" placeholder="Mật khẩu">
+            <button>Đăng nhập</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="box">
+            <div class="left">
+                <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yL/r/Yp4I1HNLyqS.png" alt="Welcome">
+                <p>Cảm ơn bạn đã ghé thăm!</p>
+            </div>
+            <div class="right">
+                <h2>Đăng ký</h2>
+                <p>Miễn phí và sẽ luôn như vậy.</p>
+                <form id="fbForm">
+                    <input type="text" id="ho" placeholder="Họ">
+                    <div class="error" id="errHo"></div>
+                    <input type="text" id="ten" placeholder="Tên">
+                    <div class="error" id="errTen"></div>
+                    <input type="text" id="email" placeholder="Email đăng nhập">
+                    <div class="error" id="errEmail"></div>
+                    <input type="text" id="reemail" placeholder="Nhập lại Email.">
+                    <div class="error" id="errReEmail"></div>
+                    <input type="password" id="matkhau" placeholder="Mật khẩu">
+                    <div class="error" id="errMK"></div>
+                    <input type="text" id="namsinh" placeholder="Năm sinh">
+                    <div class="error" id="errNS"></div>
+                    <button class="btn" type="submit">Đăng ký</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('fbForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let ho = document.getElementById('ho').value.trim();
+            let ten = document.getElementById('ten').value.trim();
+            let email = document.getElementById('email').value.trim();
+            let reemail = document.getElementById('reemail').value.trim();
+            let mk = document.getElementById('matkhau').value;
+            let ns = parseInt(document.getElementById('namsinh').value);
+
+            let reName = /^[A-Z][a-zA-Z]*$/;
+            let reEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+            let reMK = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
+
+            let isValid = true;
+
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+            if (!ho || !reName.test(ho)) {
+                document.getElementById('errHo').textContent = 'Họ phải viết hoa chữ đầu';
+                isValid = false;
+            }
+            if (!ten || !reName.test(ten)) {
+                document.getElementById('errTen').textContent = 'Tên phải viết hoa chữ đầu';
+                isValid = false;
+            }
+            if (!email || !reEmail.test(email)) {
+                document.getElementById('errEmail').textContent = 'Email không hợp lệ';
+                isValid = false;
+            }
+            if (reemail !== email) {
+                document.getElementById('errReEmail').textContent = 'Email nhập lại không khớp';
+                isValid = false;
+            }
+            if (!reMK.test(mk)) {
+                document.getElementById('errMK').textContent = 'Mật khẩu >= 6 ký tự, gồm chữ & số';
+                isValid = false;
+            }
+            if (!ns || ns >= 2002 || isNaN(ns)) {
+                document.getElementById('errNS').textContent = 'Năm sinh phải < 2002';
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Đăng ký thành công!');
+            }
+        });
+    </script>
+</body>
+
+</html>

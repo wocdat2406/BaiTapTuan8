@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Ký Tài Khoản</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+        
+        label {
+            display: inline-block;
+            width: 150px;
+            margin-bottom: 10px;
+        }
+        
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="date"] {
+            width: 250px;
+            padding: 5px;
+        }
+        
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .button-group {
+            margin-top: 20px;
+        }
+        
+        .button-group button {
+            padding: 8px 20px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>ĐĂNG KÝ TÀI KHOẢN</h2>
+
+    <form id="formDK">
+        <div>
+            <label for="txtDN">Tên đăng nhập:</label>
+            <input type="text" id="txtDN"> * <span class="error" id="errDN"></span>
+        </div>
+        <div>
+            <label for="txtMK">Mật khẩu:</label>
+            <input type="password" id="txtMK"> * <span class="error" id="errMK"></span>
+        </div>
+        <div>
+            <label for="txtXNMK">Nhập lại mật khẩu:</label>
+            <input type="password" id="txtXNMK"> * <span class="error" id="errXNMK"></span>
+        </div>
+
+        <h3>THÔNG TIN CÁ NHÂN</h3>
+
+        <div>
+            <label for="txtName">Họ và tên:</label>
+            <input type="text" id="txtName"> * <span class="error" id="errName"></span>
+        </div>
+        <div>
+            <label for="txtDate">Ngày sinh:</label>
+            <input type="date" id="txtDate"> <span class="error" id="errDate"></span>
+        </div>
+        <div>
+            <label>Giới tính:</label>
+            <input type="radio" name="gender" value="Nam" checked> Nam
+            <input type="radio" name="gender" value="Nữ"> Nữ
+        </div>
+        <div>
+            <label for="txtDC">Địa chỉ:</label>
+            <input type="text" id="txtDC"> <span class="error" id="errDC"></span>
+        </div>
+        <div>
+            <label for="txtDT">Điện thoại:</label>
+            <input type="text" id="txtDT"> <span class="error" id="errDT"></span>
+        </div>
+        <div>
+            <label for="txtEmail">Email:</label>
+            <input type="text" id="txtEmail"> <span class="error" id="errEmail"></span>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" id="btnDangKy">Đăng ký</button>
+            <button type="reset">Hủy</button>
+        </div>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $('#formDK').submit(function(e) {
+                e.preventDefault();
+                let isValid = true;
+
+                $('.error').text('');
+
+                // Tên đăng nhập
+                let tenDN = $('#txtDN').val().trim();
+                let reDN = /^[A-Za-z][\w!@#\$%\^&*()+=._-]*$/;
+                if (!reDN.test(tenDN) || /\s/.test(tenDN)) {
+                    $('#errDN').text('Tên đăng nhập không hợp lệ');
+                    isValid = false;
+                }
+
+                // Mật khẩu
+                let mk = $('#txtMK').val();
+                let reMK = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                if (!reMK.test(mk)) {
+                    $('#errMK').text('Mật khẩu phải >=8 ký tự, chứa số, in hoa, ký tự đặc biệt');
+                    isValid = false;
+                }
+
+                // Nhập lại mật khẩu
+                let xnmk = $('#txtXNMK').val();
+                if (xnmk !== mk) {
+                    $('#errXNMK').text('Mật khẩu không khớp');
+                    isValid = false;
+                }
+
+                // Họ tên
+                let hoten = $('#txtName').val().trim();
+                let reHT = /^([A-Z][a-z]+)(\s[A-Z][a-z]+)+$/;
+                if (!reHT.test(hoten)) {
+                    $('#errName').text('Viết hoa chữ đầu, ít nhất họ và tên');
+                    isValid = false;
+                }
+
+                // Ngày sinh
+                let ngaysinh = $('#txtDate').val();
+                let today = new Date();
+                let birthDate = new Date(ngaysinh);
+                let age = today.getFullYear() - birthDate.getFullYear();
+                let m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                if (age < 16 || isNaN(age)) {
+                    $('#errDate').text('Phải trên 16 tuổi');
+                    isValid = false;
+                }
+
+                // Địa chỉ
+                if ($('#txtDC').val().trim() === "") {
+                    $('#errDC').text('Không được để trống');
+                    isValid = false;
+                }
+
+                // Điện thoại
+                let sdt = $('#txtDT').val().trim();
+                let reDT = /^(09|03|07|06|05|04)\d{8}$/;
+                if (!reDT.test(sdt)) {
+                    $('#errDT').text('Phải là số điện thoại hợp lệ');
+                    isValid = false;
+                }
+
+                // Email
+                let email = $('#txtEmail').val().trim();
+                let reEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+                if (!reEmail.test(email)) {
+                    $('#errEmail').text('Nhập đúng địa chỉ email');
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    alert('Đăng ký thành công!');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
